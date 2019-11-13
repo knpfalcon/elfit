@@ -3,10 +3,11 @@
 #include <allegro5/allegro_image.h>
 
 #include "init.h"
-
+#include "version.h"
 
 bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q)
 {
+    printf("Ah, Elf It! %d.%d%d\n", MAJOR, MINOR, PATCH);
     //Allegro Init
     if (!al_init()) {
         fprintf(stderr, "Failed to init Allegro!\n");
@@ -27,6 +28,7 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
         return false;
     }
 
+    //Init the Image Addon
     if(!al_init_image_addon())
     {
       fprintf(stderr, "Failed to init image addon!");
@@ -62,10 +64,8 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
     al_register_event_source(*q, al_get_keyboard_event_source());
 
     al_clear_to_color(al_map_rgb(0, 0, 0));
-
     al_flip_display();
     
-  
     return true;
 }
 

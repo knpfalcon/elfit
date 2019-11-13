@@ -21,15 +21,11 @@ BINDIR = bin
 OUTFILE = elfit
 
 #Source files.
-_SRC = \
-%.c
-########
+_SRC = %.c
 SRC = $(patsubst %,$(SRCDIR)/%,$(_SRC))
 
 #Headers.
-_DEPS = \
-%.h
-########
+_DEPS = %.h
 DEPS = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
 
 #Object files
@@ -41,7 +37,6 @@ entity.o \
 map.o \
 init.o 
 
-########
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 #Compile Objects from Source files
