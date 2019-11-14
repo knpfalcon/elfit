@@ -22,3 +22,4 @@ bool load_graphics(t_graphics *g)
 
     return true;
 }
+#include <allegro5/allegro_color.h>

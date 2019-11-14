@@ -14,4 +14,4 @@ typedef struct              //This is the map struct. It hold all the informatio
     t_pos *pos;                 //A pointer to a position on the map grid
 }t_map;
 
-#endif //MAP_H
+#endif

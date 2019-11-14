@@ -1,5 +1,5 @@
-#ifndef GFX_H
-#define GFX_H
+#ifndef _GFX_H
+#define _GFX_H
 
 typedef struct                  //This struct holds all the bitmap pointers for loading by al_load_bitmap(...);
 {
@@ -9,4 +9,4 @@ typedef struct                  //This struct holds all the bitmap pointers for 
 
 //Loads all the graphics, packed into one function.
 bool load_graphics(t_graphics *g);
-#endif //GFX_H
+#endif
