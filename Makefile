@@ -35,7 +35,8 @@ game.o \
 main.o \
 entity.o \
 map.o \
-init.o 
+init.o \
+player.o
 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 

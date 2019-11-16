@@ -5,7 +5,6 @@
 #include "init.h"
 #include "gfx.h"
 #include "game.h"
-#include "entity.h"
 #include "main.h"
 
 /**** MAIN ****/
@@ -19,11 +18,8 @@ int main(int argc, char *argv[])
     //Initialize Everything
     init_all(&display, &timer, &event_queue);
     
-    
     //TEST load and draw a bitmap
     load_graphics(&graphics);
-    test.frame[0] = graphics.elf;
-    test.frame[1] = graphics.snowman;
 
     /* GAME LOOP */
     if(!game_loop(display, timer, event_queue, &graphics))

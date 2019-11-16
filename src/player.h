@@ -2,11 +2,9 @@
 #define _PLAYER_H
 
 #include "entity.h"
+#include "gfx.h"
 
-typedef struct player
-{
-    t_entity *entity;
-} t_player;
-
+void player_init(t_entity *p, t_graphics *g);
+void player_move(t_entity *p, bool k[]);
 
 #endif

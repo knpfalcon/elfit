@@ -5,6 +5,7 @@
 #include "init.h"
 #include "version.h"
 
+
 bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q)
 {
     printf("Ah, Elf It! %d.%d%d\n", MAJOR, MINOR, PATCH);
