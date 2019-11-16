@@ -96,11 +96,23 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
         if (redraw)
         {
             //draw_function
-            
+            al_wait_for_vsync();
+            al_clear_to_color(al_map_rgb(0,0,0));
+            if (player.y > 128)
+            {
+                al_draw_bitmap(g->snowman, 128, 128, 0);
+                al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
+            }
+            else if (player.y <= 128)
+            {
+                al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
+                al_draw_bitmap(g->snowman, 128, 128, 0);
+            }
+
             if (anim_time == 0) 
             {
-                al_clear_to_color(al_map_rgb(0,0,0));
-                al_draw_bitmap(player.sprite_sheet, player.x, player.y, 0);
+                
+                
             }
             
             al_flip_display();
@@ -112,8 +124,10 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
         {
             ALLEGRO_EVENT ev;
             al_wait_for_event(q, &ev);
+            key_event_check(&ev, &done);
             if (ev.type == ALLEGRO_EVENT_TIMER)
             {
+                
                 ++ticks;
                 if (ticks == 1)
                 {
@@ -122,7 +136,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
                 redraw = true;
             }
 
-            key_event_check(&ev, &done);
+            
         } while (!al_is_event_queue_empty(q));
     }
 

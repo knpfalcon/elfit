@@ -45,6 +45,7 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
     }
 
     //Create Display
+    al_set_new_display_option(ALLEGRO_VSYNC, 1, ALLEGRO_SUGGEST);
     *disp = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
     if (!*disp)
     {
