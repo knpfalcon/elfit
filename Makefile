@@ -2,7 +2,7 @@
 #
 
 CC = gcc
-CFLAGS = -m32 -O2 -Wall -Werror -g -DDEBUG
+CFLAGS = -m32 -O2 -Wall  -g -DDEBUG
 LIBDIR = -L/usr/lib/i386-linux-gnu 
 
 ALLEGRO_LIBS = allegro-5 allegro_acodec-5 allegro_image-5 \

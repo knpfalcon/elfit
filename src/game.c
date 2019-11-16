@@ -5,6 +5,7 @@
 
 #include "player.h"
 #include "game.h"
+#include "testmap.h"
 
 bool key[5] = { false };
 
@@ -15,7 +16,7 @@ t_entity player;
 */
 void game_update()
 {
-    player_move(&player, key);
+    player_move(&player, key, map);
 }
 
 /*
@@ -96,25 +97,40 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
         if (redraw)
         {
             //draw_function
-            al_wait_for_vsync();
+            
             al_clear_to_color(al_map_rgb(0,0,0));
-            if (player.y > 128)
+
+            for(int y = 0; y < 10; y++)
             {
-                al_draw_bitmap(g->snowman, 128, 128, 0);
-                al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
+                for(int x = 0; x < 20; x++)
+                {
+                    if (map[x + y * 20] == 0) al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
+                    if (map[x + y * 20] == 1)
+                    {
+                        al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
+                    }
+                }
             }
-            else if (player.y <= 128)
+
+            al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
+
+            for(int y = 0; y < 10; y++)
             {
-                al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
-                al_draw_bitmap(g->snowman, 128, 128, 0);
+                for(int x = 0; x < 20; x++)
+                {
+                    if (map[x + y * 20] == 1)
+                    {
+                        al_draw_bitmap_region(g->block, 0, 0, 32, 16, x * 32, (y * 32) -16, 0);
+                    }
+                }
             }
 
             if (anim_time == 0) 
             {
                 
-                
             }
             
+            al_wait_for_vsync();
             al_flip_display();
             redraw = false;
             ticks = 0;
@@ -136,7 +152,6 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
                 redraw = true;
             }
 
-            
         } while (!al_is_event_queue_empty(q));
     }
 

@@ -5,6 +5,6 @@
 #include "gfx.h"
 
 void player_init(t_entity *p, t_graphics *g);
-void player_move(t_entity *p, bool k[]);
+void player_move(t_entity *p, bool k[], unsigned char *m);
 
 #endif

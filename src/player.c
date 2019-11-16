@@ -17,7 +17,7 @@ void player_init(t_entity *p, t_graphics *g)
     p->sprite_sheet = g->elf;
 }
 
-void player_move(t_entity *p, bool k[])
+void player_move(t_entity *p, bool k[], unsigned char *m)
 {
     if (p->moving)
     {
@@ -47,23 +47,38 @@ void player_move(t_entity *p, bool k[])
     {
         if (k[KEY_UP] && p->y > 0)
         {
-            p->dir = NORTH;
-            p->moving = true;
+            if (m[(p->x/32) + ((p->y/32)-1) * 20] == 0)
+            {
+                p->dir = NORTH;
+                p->moving = true;
+            }
+            
         }
         if (k[KEY_DOWN] && p->y < 320)
         {
-            p->dir = SOUTH;
-            p->moving = true;
+            if (m[(p->x/32) + ((p->y/32)+1) * 20] == 0)
+            {
+                p->dir = SOUTH;
+                p->moving = true;
+            }
+           
         }
         if (k[KEY_LEFT] && p->x > 0)
         {
-            p->dir = WEST;
-            p->moving = true;
+            if (m[((p->x/32)-1) + (p->y/32) * 20] == 0)
+            {
+                p->dir = WEST;
+                p->moving = true;
+            }
         }
         if (k[KEY_RIGHT] && p->x < 608)
         {
-            p->dir = EAST;
-            p->moving = true;
+            if (m[((p->x/32)+1) + (p->y/32) * 20] == 0)
+            {
+                p->dir = EAST;
+                p->moving = true;
+            }
+            
         }
         printf("%d, %d\n", p->x, p->y);
     }

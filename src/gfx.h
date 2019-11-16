@@ -5,6 +5,8 @@ typedef struct                  //This struct holds all the bitmap pointers for 
 {
     ALLEGRO_BITMAP *elf;
     ALLEGRO_BITMAP *snowman;
+    ALLEGRO_BITMAP *block;
+    ALLEGRO_BITMAP *floor;
 } t_graphics;
 
 //Loads all the graphics, packed into one function.
