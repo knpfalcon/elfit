@@ -74,7 +74,7 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
 
 void clean_up(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q, t_graphics *g)
 {
-    al_destroy_bitmap(g->snowman);
+    al_destroy_bitmap(g->snowball);
     al_destroy_bitmap(g->shadow);
     al_destroy_bitmap(g->ground);
     al_destroy_bitmap(g->player);

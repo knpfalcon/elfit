@@ -20,12 +20,12 @@ bool load_graphics(t_graphics *g)
     }
     printf("\nLoad shadow: %p\n", g->shadow);
     
-    g->snowman = al_load_bitmap("data/gfx/snowman.png");
-    if (!g->snowman)
+    g->snowball = al_load_bitmap("data/gfx/snowball.png");
+    if (!g->snowball)
     {
-        fprintf(stderr, "Couldn't load snowman.png");
+        fprintf(stderr, "Couldn't load snowball.png");
     }
-    printf("Load snowman: %p\n", g->snowman);
+    printf("Load snowball: %p\n", g->snowball);
 
     g->block = al_load_bitmap("data/gfx/block.png");
     if (!g->block)

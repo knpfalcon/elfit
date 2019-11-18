@@ -6,7 +6,7 @@
 #include "game.h"
 #include "main.h"
 
-void player_init(t_entity *p, t_graphics *g)
+void player_init(t_entity *p, t_graphics *g, t_snowball *sb)
 {
     p->x = 32;
     p->y = 32;
@@ -15,12 +15,19 @@ void player_init(t_entity *p, t_graphics *g)
     p->frame = 0;
     p->shoot_time = 0;
     p->aim_charge = 0;
+    p->current_snowball = 0;
     p->moving = false;
     p->active = true;
     p->sprite_sheet = g->player;
+
+    for (int i = 0; i < MAX_SNOWBALLS; i++)
+    {
+        sb[i].active = false;
+        sb[i].dir = 0;
+    }
 }
 
-void player_move(t_entity *p, bool k[], unsigned char *m)
+void player_move(t_entity *p, bool k[], unsigned char *m, t_snowball *sb)
 {
     if (p->moving)
     {
@@ -119,12 +126,29 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
                 p->dir = EAST;
             }
         }
-        if (k[KEY_AIM] && k[KEY_FIRE] && p->shoot_time == 0 && p->aim_charge >= 7) //FIRE!!
+        if (k[KEY_AIM] && k[KEY_FIRE] && p->shoot_time == 0 && p->aim_charge >= 4) //FIRE!!
         {
             p->frame = 6;
-            p->shoot_time = 8;
+            p->shoot_time = 5;
             p->aim_charge = 0;
+
+            for (int i = 0; i < MAX_SNOWBALLS; i++)
+            {
+                if (sb[i].active == false)
+                {
+                    sb[i].active = true;
+                    sb[i].dir = p->dir;
+                    sb[i].x = p->x;
+                    if (p->dir != NORTH) sb[i].y = p->y;
+                    else sb[i].y = p->y - 16;
+                    printf ("\nSnowball %d activate\n", i);
+                    break;
+                }
+            }
+            
+
             k[KEY_FIRE] = false;
+            
         }
         
     }
@@ -141,5 +165,5 @@ void player_animate(t_entity *p)
     {
         if (p->frame < 4) p->frame++;
         else p->frame = 1;
-    }   
+    }
 }

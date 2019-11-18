@@ -11,6 +11,8 @@
 bool key[7] = { false };
 
 t_entity player;
+t_snowball snowball[MAX_SNOWBALLS];
+
 ALLEGRO_BITMAP *bitmap_game = NULL;
 
 /*
@@ -18,8 +20,27 @@ ALLEGRO_BITMAP *bitmap_game = NULL;
 */
 void game_update()
 {
-    player_move(&player, key, map);
+
+    //Update snowballs
+    for (int i = 0; i < MAX_SNOWBALLS; i++)
+    {
+        if (snowball[i].active)
+        {
+            if (snowball[i].x >= 640 || snowball[i].x <= -32 || snowball[i].y <= -32 || snowball[i].y >= 304)
+            {
+                snowball[i].active = false;
+            }
+            if (snowball[i].dir == NORTH) snowball[i].y -= 8;
+            else if (snowball[i].dir == SOUTH) snowball[i].y += 8;
+            else if (snowball[i].dir == EAST)  snowball[i].x += 8;
+            else if (snowball[i].dir == WEST)  snowball[i].x -= 8;
+        }
+    }
+
+    player_move(&player, key, map, snowball);
     if (player.shoot_time > 0) player.shoot_time--;
+
+    
 }
 
 /*
@@ -37,16 +58,25 @@ void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
             {
                 al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
             }
-            if (map[x + y * 20] == 2)
-            {
-                al_draw_bitmap_region(g->snowman, 0, 32, 32, 32, x * 32, y * 32, 0);
-            }
         }
     }
 
     al_draw_bitmap(g->shadow, player.x, player.y - PLAYER_OFFSET + 2, 0);
     player_draw(&player, player.dir, player.frame);
 
+    //Draw Snowballs
+    for (int i = 0; i < MAX_SNOWBALLS; i++)
+    {
+        if (snowball[i].active)
+        {
+            if (snowball[i].dir == EAST) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == WEST) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == NORTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == SOUTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
+        }
+    }
+
+    //draw forground
     for(int y = 0; y < 10; y++)
     {
         for(int x = 0; x < 20; x++)
@@ -55,10 +85,6 @@ void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
             {
                 al_draw_bitmap_region(g->block, 0, 0, 32, 16, x * 32, (y * 32) -16, 0);
             }
-            if (map[x + y * 20] == 2)
-            {
-                al_draw_bitmap_region(g->snowman, 0, 0, 32, 32, x * 32, (y * 32) -32, 0);
-            }
         }
     }
 
@@ -66,6 +92,8 @@ void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
     {
         player_animate(&player);
     }
+
+    
 
     al_set_target_backbuffer(display);
     al_draw_scaled_bitmap(bitmap_game, 0, 0, 640, 360, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
@@ -149,7 +177,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
     int ticks = 0;
     int anim_time = 0;
 
-    player_init(&player, g);
+    player_init(&player, g, snowball);
     bitmap_game = al_create_bitmap(640, 360);
     
     al_start_timer(timer);
