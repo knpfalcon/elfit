@@ -46,6 +46,7 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
 
     //Create Display
     al_set_new_display_option(ALLEGRO_VSYNC, 1, ALLEGRO_SUGGEST);
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     *disp = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
     if (!*disp)
     {
@@ -74,7 +75,7 @@ bool init_all(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q
 void clean_up(ALLEGRO_DISPLAY **disp, ALLEGRO_TIMER **t, ALLEGRO_EVENT_QUEUE **q, t_graphics *g)
 {
     al_destroy_bitmap(g->snowman);
-    al_destroy_bitmap(g->elf);
+    al_destroy_bitmap(g->player);
     if(*q != NULL) al_destroy_event_queue(*q);
     if(*t != NULL)  al_destroy_timer(*t);
     if(*disp != NULL) al_destroy_display(*disp);

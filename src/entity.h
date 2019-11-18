@@ -17,7 +17,8 @@ typedef struct                  //An entity is either the player or an enemy. It
     unsigned int x;             //X position of an entity.
     unsigned int y;             //Y position of an entity.
     unsigned char dir;          //What direction is this entity moving?
-    unsigned char speed;        //How many pixels at a time does the entity move?
+    unsigned char speed;        //How many pixels at a time does the entity
+    unsigned char frame;
     bool moving;                //Is this entity moving?
     bool active;                //Is this entity active?
 

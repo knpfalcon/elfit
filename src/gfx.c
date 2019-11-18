@@ -6,12 +6,12 @@
 
 bool load_graphics(t_graphics *g)
 {
-    g->elf = al_load_bitmap("data/gfx/elf.png");
-    if (!g->elf)
+    g->player = al_load_bitmap("data/gfx/player.png");
+    if (!g->player)
     {
-        fprintf(stderr, "Couldn't load elf.png");
+        fprintf(stderr, "Couldn't load player.png");
     }
-    printf("\nLoad elf: %p\n", g->elf);
+    printf("\nLoad elf: %p\n", g->player);
     
     g->snowman = al_load_bitmap("data/gfx/snowman.png");
     if (!g->snowman)

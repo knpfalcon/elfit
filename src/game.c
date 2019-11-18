@@ -6,10 +6,12 @@
 #include "player.h"
 #include "game.h"
 #include "testmap.h"
+#include "main.h"
 
 bool key[5] = { false };
 
 t_entity player;
+ALLEGRO_BITMAP *bitmap_game = NULL;
 
 /*
 *   Game Update Function
@@ -89,6 +91,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
     int anim_time = 0;
 
     player_init(&player, g);
+    bitmap_game = al_create_bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
     
     al_start_timer(timer);
     /* Main Loop (Slow down instead of frame skip) */
@@ -97,22 +100,25 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
         if (redraw)
         {
             //draw_function
-            
-            al_clear_to_color(al_map_rgb(0,0,0));
-
+            al_set_target_bitmap(bitmap_game);
             for(int y = 0; y < 10; y++)
             {
                 for(int x = 0; x < 20; x++)
                 {
-                    if (map[x + y * 20] == 0) al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
+                    al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
                     if (map[x + y * 20] == 1)
                     {
                         al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
                     }
+                    if (map[x + y * 20] == 2)
+                    {
+                        al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
+                        al_draw_bitmap_region(g->snowman, 0, 32, 32, 32, x * 32, y * 32, 0);
+                    }
                 }
             }
 
-            al_draw_bitmap(player.sprite_sheet, player.x, player.y - 16, 0);
+            player_draw(&player, player.dir, player.frame);
 
             for(int y = 0; y < 10; y++)
             {
@@ -122,14 +128,21 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
                     {
                         al_draw_bitmap_region(g->block, 0, 0, 32, 16, x * 32, (y * 32) -16, 0);
                     }
+                    if (map[x + y * 20] == 2)
+                    {
+                        al_draw_bitmap_region(g->snowman, 0, 0, 32, 32, x * 32, (y * 32) -32, 0);
+                    }
                 }
             }
 
             if (anim_time == 0) 
             {
-                
+                player_animate(&player);
             }
-            
+
+            al_set_target_backbuffer(display);
+            al_draw_scaled_bitmap(bitmap_game, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
+
             al_wait_for_vsync();
             al_flip_display();
             redraw = false;
@@ -148,6 +161,8 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
                 if (ticks == 1)
                 {
                     game_update();
+                    anim_time++;
+                    if (anim_time == 8) anim_time = 0;
                 }
                 redraw = true;
             }

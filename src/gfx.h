@@ -3,7 +3,7 @@
 
 typedef struct                  //This struct holds all the bitmap pointers for loading by al_load_bitmap(...);
 {
-    ALLEGRO_BITMAP *elf;
+    ALLEGRO_BITMAP *player;
     ALLEGRO_BITMAP *snowman;
     ALLEGRO_BITMAP *block;
     ALLEGRO_BITMAP *floor;

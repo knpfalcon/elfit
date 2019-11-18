@@ -11,10 +11,11 @@ void player_init(t_entity *p, t_graphics *g)
     p->x = 32;
     p->y = 32;
     p->dir = SOUTH;
-    p->speed = 4;
+    p->speed = 1;
+    p->frame = 0;
     p->moving = false;
     p->active = true;
-    p->sprite_sheet = g->elf;
+    p->sprite_sheet = g->player;
 }
 
 void player_move(t_entity *p, bool k[], unsigned char *m)
@@ -41,15 +42,18 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
             p->x += p->speed;
             if (p->x % 32 == 0) p->moving = false;
         }
+        
     }
     
     if (!p->moving)
     {
+        p->frame = 0;
         if (k[KEY_UP] && p->y > 0)
         {
             if (m[(p->x/32) + ((p->y/32)-1) * 20] == 0)
             {
                 p->dir = NORTH;
+                p->frame = 1;
                 p->moving = true;
             }
             
@@ -59,6 +63,7 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
             if (m[(p->x/32) + ((p->y/32)+1) * 20] == 0)
             {
                 p->dir = SOUTH;
+                p->frame = 1;
                 p->moving = true;
             }
            
@@ -68,6 +73,7 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
             if (m[((p->x/32)-1) + (p->y/32) * 20] == 0)
             {
                 p->dir = WEST;
+                p->frame = 1;
                 p->moving = true;
             }
         }
@@ -76,12 +82,27 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
             if (m[((p->x/32)+1) + (p->y/32) * 20] == 0)
             {
                 p->dir = EAST;
+                p->frame = 1;
                 p->moving = true;
             }
             
         }
         printf("%d, %d\n", p->x, p->y);
     }
+}
     
-    
+void player_draw(t_entity *p, unsigned char dir, unsigned char frame)
+{
+
+    al_draw_bitmap_region(p->sprite_sheet, frame * PLAYER_SIZE, dir * PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE, p->x, p->y - PLAYER_OFFSET, 0);
+
+}
+
+void player_animate(t_entity *p)
+{
+    if (p->moving)
+    {
+        if (p->frame < 4) p->frame++;
+        else p->frame = 1;
+    }   
 }
