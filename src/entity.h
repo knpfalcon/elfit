@@ -18,7 +18,9 @@ typedef struct                  //An entity is either the player or an enemy. It
     unsigned int y;             //Y position of an entity.
     unsigned char dir;          //What direction is this entity moving?
     unsigned char speed;        //How many pixels at a time does the entity
-    unsigned char frame;
+    unsigned char frame;        //What is the current frame?
+    unsigned char shoot_time;   //Shoot frame time
+    unsigned char aim_charge;   //Charge aim
     bool moving;                //Is this entity moving?
     bool active;                //Is this entity active?
 

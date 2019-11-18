@@ -13,6 +13,8 @@ void player_init(t_entity *p, t_graphics *g)
     p->dir = SOUTH;
     p->speed = 2;
     p->frame = 0;
+    p->shoot_time = 0;
+    p->aim_charge = 0;
     p->moving = false;
     p->active = true;
     p->sprite_sheet = g->player;
@@ -45,49 +47,86 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
         
     }
     
-    if (!p->moving)
+    if (!p->moving && p->shoot_time == 0)
     {
-        p->frame = 0;
-        if (k[KEY_UP] && p->y > 0)
+        
+        if (!k[KEY_AIM])
         {
-            if (m[(p->x/32) + ((p->y/32)-1) * 20] == 0)
+            p->frame = 0;
+            p->aim_charge = 0;
+        }
+
+        if (!k[KEY_AIM])
+        {
+            if (k[KEY_UP] && p->y > 0)
+            {
+                if (m[(p->x/32) + ((p->y/32)-1) * 20] == 0)
+                {
+                    p->dir = NORTH;
+                    p->frame = 1;
+                    p->moving = true;
+                }
+                
+            }
+            if (k[KEY_DOWN] && p->y < 320)
+            {
+                if (m[(p->x/32) + ((p->y/32)+1) * 20] == 0)
+                {
+                    p->dir = SOUTH;
+                    p->frame = 1;
+                    p->moving = true;
+                }
+            
+            }
+            if (k[KEY_LEFT] && p->x > 0)
+            {
+                if (m[((p->x/32)-1) + (p->y/32) * 20] == 0)
+                {
+                    p->dir = WEST;
+                    p->frame = 1;
+                    p->moving = true;
+                }
+            }
+            if (k[KEY_RIGHT] && p->x < 608)
+            {
+                if (m[((p->x/32)+1) + (p->y/32) * 20] == 0)
+                {
+                    p->dir = EAST;
+                    p->frame = 1;
+                    p->moving = true;
+                }
+                
+            }
+        }
+        if (k[KEY_AIM] && !k[KEY_FIRE] && p->shoot_time == 0)
+        {
+            p->frame = 5;
+            p->aim_charge++;
+            if (k[KEY_UP])
             {
                 p->dir = NORTH;
-                p->frame = 1;
-                p->moving = true;
             }
-            
-        }
-        if (k[KEY_DOWN] && p->y < 320)
-        {
-            if (m[(p->x/32) + ((p->y/32)+1) * 20] == 0)
+            if (k[KEY_DOWN])
             {
                 p->dir = SOUTH;
-                p->frame = 1;
-                p->moving = true;
             }
-           
-        }
-        if (k[KEY_LEFT] && p->x > 0)
-        {
-            if (m[((p->x/32)-1) + (p->y/32) * 20] == 0)
+            if (k[KEY_LEFT] && p->x > 0)
             {
                 p->dir = WEST;
-                p->frame = 1;
-                p->moving = true;
             }
-        }
-        if (k[KEY_RIGHT] && p->x < 608)
-        {
-            if (m[((p->x/32)+1) + (p->y/32) * 20] == 0)
+            if (k[KEY_RIGHT] && p->x < 608)
             {
                 p->dir = EAST;
-                p->frame = 1;
-                p->moving = true;
             }
-            
         }
-        printf("%d, %d\n", p->x, p->y);
+        if (k[KEY_AIM] && k[KEY_FIRE] && p->shoot_time == 0 && p->aim_charge >= 16) //FIRE!!
+        {
+            p->frame = 6;
+            p->shoot_time = 8;
+            p->aim_charge = 0;
+            k[KEY_FIRE] = false;
+        }
+        
     }
 }
     

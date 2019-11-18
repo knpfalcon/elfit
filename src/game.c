@@ -8,7 +8,7 @@
 #include "testmap.h"
 #include "main.h"
 
-bool key[5] = { false };
+bool key[7] = { false };
 
 t_entity player;
 ALLEGRO_BITMAP *bitmap_game = NULL;
@@ -19,6 +19,7 @@ ALLEGRO_BITMAP *bitmap_game = NULL;
 void game_update()
 {
     player_move(&player, key, map);
+    if (player.shoot_time > 0) player.shoot_time--;
 }
 
 /*
@@ -67,7 +68,7 @@ void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
     }
 
     al_set_target_backbuffer(display);
-    al_draw_scaled_bitmap(bitmap_game, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
+    al_draw_scaled_bitmap(bitmap_game, 0, 0, 640, 360, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
 
     al_wait_for_vsync();
     al_flip_display();
@@ -95,6 +96,12 @@ void key_event_check(ALLEGRO_EVENT *ev, bool *done)
             case ALLEGRO_KEY_RIGHT:
                 key[KEY_RIGHT] = true;
                 break;
+            case ALLEGRO_KEY_Z:
+                key[KEY_AIM] = true;
+                break;
+            case ALLEGRO_KEY_X:
+                key[KEY_FIRE] = true;
+                break;
             case ALLEGRO_KEY_ESCAPE:
                 key[KEY_ESC] = true;
                 break;
@@ -115,6 +122,12 @@ void key_event_check(ALLEGRO_EVENT *ev, bool *done)
                 break;
             case ALLEGRO_KEY_RIGHT:
                 key[KEY_RIGHT] = false;
+                break;
+            case ALLEGRO_KEY_Z:
+                key[KEY_AIM] = false;
+                break;
+            case ALLEGRO_KEY_X:
+                key[KEY_FIRE] = false;
                 break;
             case ALLEGRO_KEY_ESCAPE:
                 key[KEY_ESC] = false;
@@ -137,7 +150,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
     int anim_time = 0;
 
     player_init(&player, g);
-    bitmap_game = al_create_bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
+    bitmap_game = al_create_bitmap(640, 360);
     
     al_start_timer(timer);
     /* Main Loop (Slow down instead of frame skip) */
