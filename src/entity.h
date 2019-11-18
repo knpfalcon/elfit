@@ -21,7 +21,6 @@ typedef struct                  //An entity is either the player or an enemy. It
     unsigned char frame;        //What is the current frame?
     unsigned char shoot_time;   //Shoot frame time
     unsigned char aim_charge;   //Charge aim
-    unsigned char current_snowball;   
     bool moving;                //Is this entity moving?
     bool active;                //Is this entity active?
 

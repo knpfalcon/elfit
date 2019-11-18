@@ -15,7 +15,6 @@ void player_init(t_entity *p, t_graphics *g, t_snowball *sb)
     p->frame = 0;
     p->shoot_time = 0;
     p->aim_charge = 0;
-    p->current_snowball = 0;
     p->moving = false;
     p->active = true;
     p->sprite_sheet = g->player;

@@ -30,6 +30,10 @@ void game_update()
             {
                 snowball[i].active = false;
             }
+            if (map[(snowball[i].x/32) + (snowball[i].y/32) * 20] > 0)
+            {
+                snowball[i].active = false;
+            }
             if (snowball[i].dir == NORTH) snowball[i].y -= 8;
             else if (snowball[i].dir == SOUTH) snowball[i].y += 8;
             else if (snowball[i].dir == EAST)  snowball[i].x += 8;
@@ -69,10 +73,10 @@ void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
     {
         if (snowball[i].active)
         {
-            if (snowball[i].dir == EAST) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
-            if (snowball[i].dir == WEST) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
-            if (snowball[i].dir == NORTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
-            if (snowball[i].dir == SOUTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == EAST) al_draw_bitmap(g->snowball, snowball[i].x - 8, snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == WEST) al_draw_bitmap(g->snowball, snowball[i].x -16 , snowball[i].y - PLAYER_OFFSET, 0);
+            if (snowball[i].dir == NORTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET - 16, 0);
+            if (snowball[i].dir == SOUTH) al_draw_bitmap(g->snowball, snowball[i].x, snowball[i].y - PLAYER_OFFSET - 16, 0);
         }
     }
 
