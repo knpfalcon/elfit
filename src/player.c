@@ -119,7 +119,7 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
                 p->dir = EAST;
             }
         }
-        if (k[KEY_AIM] && k[KEY_FIRE] && p->shoot_time == 0 && p->aim_charge >= 16) //FIRE!!
+        if (k[KEY_AIM] && k[KEY_FIRE] && p->shoot_time == 0 && p->aim_charge >= 7) //FIRE!!
         {
             p->frame = 6;
             p->shoot_time = 8;
