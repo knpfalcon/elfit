@@ -11,7 +11,14 @@ bool load_graphics(t_graphics *g)
     {
         fprintf(stderr, "Couldn't load player.png");
     }
-    printf("\nLoad elf: %p\n", g->player);
+    printf("\nLoad player: %p\n", g->player);
+
+    g->shadow = al_load_bitmap("data/gfx/shadow.png");
+    if (!g->shadow)
+    {
+        fprintf(stderr, "Couldn't load shadow.png");
+    }
+    printf("\nLoad shadow: %p\n", g->shadow);
     
     g->snowman = al_load_bitmap("data/gfx/snowman.png");
     if (!g->snowman)
@@ -27,12 +34,12 @@ bool load_graphics(t_graphics *g)
     }
     printf("Load block: %p\n", g->block);
 
-    g->floor = al_load_bitmap("data/gfx/floor.png");
-    if (!g->floor)
+    g->ground = al_load_bitmap("data/gfx/ground.png");
+    if (!g->ground)
     {
-        fprintf(stderr, "Couldn't load floor.png");
+        fprintf(stderr, "Couldn't load ground.png");
     }
-    printf("Load floor: %p\n", g->floor);
+    printf("Load ground: %p\n", g->ground);
 
     return true;
 }

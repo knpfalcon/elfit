@@ -105,19 +105,19 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
             {
                 for(int x = 0; x < 20; x++)
                 {
-                    al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
+                    al_draw_bitmap(g->ground, x * 32, (y * 32), 0);
                     if (map[x + y * 20] == 1)
                     {
                         al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
                     }
                     if (map[x + y * 20] == 2)
                     {
-                        al_draw_bitmap(g->floor, x * 32, (y * 32), 0);
                         al_draw_bitmap_region(g->snowman, 0, 32, 32, 32, x * 32, y * 32, 0);
                     }
                 }
             }
 
+            al_draw_bitmap(g->shadow, player.x, player.y - PLAYER_OFFSET + 2, 0);
             player_draw(&player, player.dir, player.frame);
 
             for(int y = 0; y < 10; y++)
@@ -162,7 +162,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
                 {
                     game_update();
                     anim_time++;
-                    if (anim_time == 8) anim_time = 0;
+                    if (anim_time == player.speed * 2 ) anim_time = 0;
                 }
                 redraw = true;
             }

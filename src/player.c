@@ -11,7 +11,7 @@ void player_init(t_entity *p, t_graphics *g)
     p->x = 32;
     p->y = 32;
     p->dir = SOUTH;
-    p->speed = 1;
+    p->speed = 2;
     p->frame = 0;
     p->moving = false;
     p->active = true;
@@ -94,6 +94,7 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
 void player_draw(t_entity *p, unsigned char dir, unsigned char frame)
 {
 
+    
     al_draw_bitmap_region(p->sprite_sheet, frame * PLAYER_SIZE, dir * PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE, p->x, p->y - PLAYER_OFFSET, 0);
 
 }

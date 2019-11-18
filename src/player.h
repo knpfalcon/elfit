@@ -5,7 +5,7 @@
 #include "gfx.h"
 
 #define PLAYER_SIZE 32
-#define PLAYER_OFFSET 4
+#define PLAYER_OFFSET 8
 
 void player_init(t_entity *p, t_graphics *g);
 void player_move(t_entity *p, bool k[], unsigned char *m);
