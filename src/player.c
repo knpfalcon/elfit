@@ -93,10 +93,7 @@ void player_move(t_entity *p, bool k[], unsigned char *m)
     
 void player_draw(t_entity *p, unsigned char dir, unsigned char frame)
 {
-
-    
     al_draw_bitmap_region(p->sprite_sheet, frame * PLAYER_SIZE, dir * PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE, p->x, p->y - PLAYER_OFFSET, 0);
-
 }
 
 void player_animate(t_entity *p)

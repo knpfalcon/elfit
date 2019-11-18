@@ -24,8 +24,53 @@ void game_update()
 /*
 *   Game Draw Function
 */
-void game_draw()
+void game_draw(ALLEGRO_DISPLAY *display, t_graphics *g, int *anim_time)
 {
+    al_set_target_bitmap(bitmap_game);
+    for(int y = 0; y < 10; y++)
+    {
+        for(int x = 0; x < 20; x++)
+        {
+            al_draw_bitmap(g->ground, x * 32, (y * 32), 0);
+            if (map[x + y * 20] == 1)
+            {
+                al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
+            }
+            if (map[x + y * 20] == 2)
+            {
+                al_draw_bitmap_region(g->snowman, 0, 32, 32, 32, x * 32, y * 32, 0);
+            }
+        }
+    }
+
+    al_draw_bitmap(g->shadow, player.x, player.y - PLAYER_OFFSET + 2, 0);
+    player_draw(&player, player.dir, player.frame);
+
+    for(int y = 0; y < 10; y++)
+    {
+        for(int x = 0; x < 20; x++)
+        {
+            if (map[x + y * 20] == 1)
+            {
+                al_draw_bitmap_region(g->block, 0, 0, 32, 16, x * 32, (y * 32) -16, 0);
+            }
+            if (map[x + y * 20] == 2)
+            {
+                al_draw_bitmap_region(g->snowman, 0, 0, 32, 32, x * 32, (y * 32) -32, 0);
+            }
+        }
+    }
+
+    if (*anim_time == 0) 
+    {
+        player_animate(&player);
+    }
+
+    al_set_target_backbuffer(display);
+    al_draw_scaled_bitmap(bitmap_game, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
+
+    al_wait_for_vsync();
+    al_flip_display();
 
 }
 
@@ -80,6 +125,7 @@ void key_event_check(ALLEGRO_EVENT *ev, bool *done)
     if (ev->type == ALLEGRO_EVENT_DISPLAY_CLOSE || key[KEY_ESC]) *done = true; //Exit game if escape is pressed or close window
 }
 
+
 /*
 *   Main Game Loop
 */
@@ -99,52 +145,7 @@ bool game_loop(ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer, ALLEGRO_EVENT_QUE
     {
         if (redraw)
         {
-            //draw_function
-            al_set_target_bitmap(bitmap_game);
-            for(int y = 0; y < 10; y++)
-            {
-                for(int x = 0; x < 20; x++)
-                {
-                    al_draw_bitmap(g->ground, x * 32, (y * 32), 0);
-                    if (map[x + y * 20] == 1)
-                    {
-                        al_draw_bitmap_region(g->block, 0, 16, 32, 32, x * 32, y * 32, 0);
-                    }
-                    if (map[x + y * 20] == 2)
-                    {
-                        al_draw_bitmap_region(g->snowman, 0, 32, 32, 32, x * 32, y * 32, 0);
-                    }
-                }
-            }
-
-            al_draw_bitmap(g->shadow, player.x, player.y - PLAYER_OFFSET + 2, 0);
-            player_draw(&player, player.dir, player.frame);
-
-            for(int y = 0; y < 10; y++)
-            {
-                for(int x = 0; x < 20; x++)
-                {
-                    if (map[x + y * 20] == 1)
-                    {
-                        al_draw_bitmap_region(g->block, 0, 0, 32, 16, x * 32, (y * 32) -16, 0);
-                    }
-                    if (map[x + y * 20] == 2)
-                    {
-                        al_draw_bitmap_region(g->snowman, 0, 0, 32, 32, x * 32, (y * 32) -32, 0);
-                    }
-                }
-            }
-
-            if (anim_time == 0) 
-            {
-                player_animate(&player);
-            }
-
-            al_set_target_backbuffer(display);
-            al_draw_scaled_bitmap(bitmap_game, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, al_get_display_width(display), al_get_display_height(display), 0);
-
-            al_wait_for_vsync();
-            al_flip_display();
+            game_draw(display, g, &anim_time);
             redraw = false;
             ticks = 0;
         }
